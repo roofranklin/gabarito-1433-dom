@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Tarefas</title>
+    <title>Lista de Usuários</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Lista de Tarefas</h1>
-        <div class="input-container">
-            <input type="text" id="task-input" placeholder="Digite uma nova tarefa...">
-            <button id="add-task-btn">Adicionar</button>
-        </div>
-        <ul id="task-list"></ul>
-    </div>
+    <h1>Lista de Usuários</h1>
+    <form id="form-usuario">
+        <input type="text" id="input-nome" placeholder="Digite um nome" required>
+        <button type="submit">Adicionar Usuário</button>
+    </form>
+    <ul id="lista-usuarios"></ul>
+
     <script src="script.js"></script>
 </body>
 </html>
