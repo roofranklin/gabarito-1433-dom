@@ -1,34 +1,40 @@
-let contador = 0;
+function validarFormulario() {
+    const nomeCompleto = document.getElementById('nomeCompleto');
+    const email = document.getElementById('email');
+    const senha = document.getElementById('senha');
+    const dataNascimento = document.getElementById('dataNascimento');
+    const termos = document.getElementById('termos');
+    const mensagem = document.getElementById('mensagem');
 
-const valorDisplay = document.querySelector('#valor-contador');
-const btnAdicionar = document.querySelector('#btn-adicionar');
-const btnSubtrair = document.querySelector('#btn-subtrair');
+    // Limpa a mensagem de erro/sucesso anterior
+    mensagem.textContent = '';
+    mensagem.style.color = 'red'; // Cor padrão para erros
 
-btnAdicionar.onclick = function() {
-  contador++; // Incrementa a variável
-  valorDisplay.innerText = contador; // Atualiza o texto na tela
-};
+    if (nomeCompleto.value.trim() === '') {
+        mensagem.textContent = 'O campo Nome Completo não pode estar vazio.';
+        return;
+    }
 
-btnSubtrair.onclick = function() {
-  contador--; // Decrementa a variável
-  valorDisplay.innerText = contador; // Atualiza o texto na tela
-};
+    if (!email.value.includes('@')) {
+        mensagem.textContent = 'O campo E-mail deve incluir o caractere @.';
+        return;
+    }
 
-const inputNome = document.querySelector('#campo-nome');
-const btnEnviar = document.querySelector('#btn-enviar');
-const feedback = document.querySelector('#feedback-msg');
+    if (senha.value.length < 8) {
+        mensagem.textContent = 'A senha deve ter no mínimo 8 caracteres.';
+        return;
+    }
 
-btnEnviar.onclick = function(event) {
-  event.preventDefault(); // MUITO IMPORTANTE! Impede o recarregamento da página.
+    if (dataNascimento.value === '') {
+        mensagem.textContent = 'O campo Data de Nascimento não pode estar vazio.';
+        return;
+    }
 
-  const nomeDigitado = inputNome.value; // .value para pegar o valor de um input
+    if (!termos.checked) {
+        mensagem.textContent = 'Você precisa aceitar os termos.';
+        return;
+    }
 
-  // Validação simples
-  if (nomeDigitado === '') {
-    feedback.innerText = 'Erro: O campo nome não pode estar vazio!';
-    feedback.style.color = 'red'; // Bônus: manipulando o CSS
-  } else {
-    feedback.innerText = 'Formulário enviado com sucesso!';
-    feedback.style.color = 'green';
-  }
-};
+    mensagem.textContent = 'Cadastro realizado com sucesso!';
+    mensagem.style.color = 'green';
+}
