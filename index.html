@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário de Cadastro</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Contador</h1>
@@ -39,9 +40,13 @@
             <label for="termos">Aceito os Termos</label>
         </div>
         <br>
-        <button type="button" id="btnSubmit" onclick="validarFormulario()">Cadastrar</button>
+        <button type="submit" id="btnSubmit">Cadastrar</button>
     </form>
     <div id="mensagem"></div>
+
+    <hr>
+    <h2>Usuários Cadastrados</h2>
+    <ul id="lista-usuarios"></ul>
 
     <script src="script.js"></script>
 </body>
