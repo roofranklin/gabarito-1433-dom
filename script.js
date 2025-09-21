@@ -1,3 +1,18 @@
+let contador = 0;
+
+const valorDisplay = document.querySelector('#valor-contador');
+const btnAdicionar = document.querySelector('#btn-adicionar');
+const btnSubtrair = document.querySelector('#btn-subtrair');
+
+btnAdicionar.onclick = function() {
+  contador++; // Incrementa a variável
+  valorDisplay.innerText = contador; // Atualiza o texto na tela
+};
+
+btnSubtrair.onclick = function() {
+  contador--; // Decrementa a variável
+  valorDisplay.innerText = contador; // Atualiza o texto na tela
+};
 function validarFormulario() {
     const nomeCompleto = document.getElementById('nomeCompleto');
     const email = document.getElementById('email');
