@@ -1,98 +1,28 @@
-let contador = 0;
+document.addEventListener('DOMContentLoaded', () => {
+    const taskInput = document.getElementById('task-input');
+    const addTaskBtn = document.getElementById('add-task-btn');
+    const taskList = document.getElementById('task-list');
 
-const valorDisplay = document.querySelector('#valor-contador');
-const btnAdicionar = document.querySelector('#btn-adicionar');
-const btnSubtrair = document.querySelector('#btn-subtrair');
+    addTaskBtn.addEventListener('click', addTask);
+    taskInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            addTask();
+        }
+    });
 
-function atualizarDisplayContador() {
-  valorDisplay.innerText = contador;
-  if (contador < 0) {
-    valorDisplay.style.color = 'red';
-  } else {
-    valorDisplay.style.color = 'green';
-  }
-}
+    function addTask() {
+        const taskText = taskInput.value.trim();
 
-btnAdicionar.addEventListener('click', function() {
-    contador++;
-    atualizarDisplayContador();
-});
+        if (taskText === '') {
+            alert('Por favor, digite uma tarefa antes de adicionar.');
+            return;
+        }
 
-btnSubtrair.addEventListener('click', function() {
-    contador--;
-    atualizarDisplayContador();
-});
+        const li = document.createElement('li');
+        li.textContent = taskText;
+        taskList.appendChild(li);
 
-atualizarDisplayContador(); // Chama a função na inicialização
-const form = document.querySelector('#cadastroForm');
-const inputNome = document.querySelector('#nomeCompleto');
-const listaUsuarios = document.querySelector('#lista-usuarios');
-
-inputNome.addEventListener('input', function() {
-  if (inputNome.value.trim() === '') {
-    // .trim() remove espaços em branco do início e fim
-    inputNome.classList.add('input-error');
-    inputNome.classList.remove('input-success');
-  } else {
-    inputNome.classList.add('input-success');
-    inputNome.classList.remove('input-error');
-  }
-});
-
-form.addEventListener('submit', function(event) {
-    event.preventDefault(); // Evita o envio padrão do formulário
-
-    const nomeCompleto = document.getElementById('nomeCompleto');
-    const email = document.getElementById('email');
-    const senha = document.getElementById('senha');
-    const dataNascimento = document.getElementById('dataNascimento');
-    const termos = document.getElementById('termos');
-    const mensagem = document.getElementById('mensagem');
-
-    // Limpa a mensagem de erro/sucesso anterior
-    mensagem.textContent = '';
-    mensagem.style.color = 'red'; // Cor padrão para erros
-
-    const nomeDigitado = inputNome.value;
-
-    if (nomeDigitado.trim() === '') {
-        mensagem.textContent = 'O campo Nome Completo não pode estar vazio.';
-        return;
+        taskInput.value = '';
+        taskInput.focus();
     }
-
-    if (!email.value.includes('@')) {
-        mensagem.textContent = 'O campo E-mail deve incluir o caractere @.';
-        return;
-    }
-
-    if (senha.value.length < 8) {
-        mensagem.textContent = 'A senha deve ter no mínimo 8 caracteres.';
-        return;
-    }
-
-    if (dataNascimento.value === '') {
-        mensagem.textContent = 'O campo Data de Nascimento não pode estar vazio.';
-        return;
-    }
-
-    if (!termos.checked) {
-        mensagem.textContent = 'Você precisa aceitar os termos.';
-        return;
-    }
-
-    mensagem.textContent = 'Usuário cadastrado com sucesso!';
-    mensagem.style.color = 'green';
-
-    // 1. Criar o <li>
-    const novoLi = document.createElement('li');
-
-    // 2. Configurar o <li>
-    novoLi.textContent = `Nome: ${nomeDigitado}`;
-
-    // 3. Anexar o <li> à <ul>
-    listaUsuarios.appendChild(novoLi);
-
-    // Limpar o campo do formulário após o envio
-    inputNome.value = '';
-    inputNome.classList.remove('input-success'); // Reseta a classe
 });
