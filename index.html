@@ -1,26 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <title>Contador e Formulário</title>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Cadastro</title>
 </head>
 <body>
-  <h1>Contador</h1>
-  <p>Valor: <span id="valor-contador">0</span></p>
-  <button id="btn-subtrair">-</button>
-  <button id="btn-adicionar">+</button>
+    <h1>Contador</h1>
+    <p>Valor: <span id="valor-contador">0</span></p>
+    <button id="btn-subtrair">-</button>
+    <button id="btn-adicionar">+</button>
 
-  <hr>
-
-  <h1>Formulário de Validação</h1>
-    <form id="meu-formulario">
-        <label for="campo-nome">Nome:</label>
-        <input type="text" id="campo-nome" placeholder="Digite seu nome">
-        <br><br>
-        <button type="submit" id="btn-enviar">Enviar</button>
+    <hr>
+    <h1>Formulário de Cadastro</h1>
+    <form id="cadastroForm">
+        <div>
+            <label for="nomeCompleto">Nome Completo:</label>
+            <input type="text" id="nomeCompleto" name="nomeCompleto">
+        </div>
+        <br>
+        <div>
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email">
+        </div>
+        <br>
+        <div>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha">
+        </div>
+        <br>
+        <div>
+            <label for="dataNascimento">Data de Nascimento:</label>
+            <input type="date" id="dataNascimento" name="dataNascimento">
+        </div>
+        <br>
+        <div>
+            <input type="checkbox" id="termos" name="termos">
+            <label for="termos">Aceito os Termos</label>
+        </div>
+        <br>
+        <button type="button" id="btnSubmit" onclick="validarFormulario()">Cadastrar</button>
     </form>
-    <p id="feedback-msg"></p>  
+    <div id="mensagem"></div>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

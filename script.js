@@ -13,22 +13,43 @@ btnSubtrair.onclick = function() {
   contador--; // Decrementa a variável
   valorDisplay.innerText = contador; // Atualiza o texto na tela
 };
+function validarFormulario() {
+    const nomeCompleto = document.getElementById('nomeCompleto');
+    const email = document.getElementById('email');
+    const senha = document.getElementById('senha');
+    const dataNascimento = document.getElementById('dataNascimento');
+    const termos = document.getElementById('termos');
+    const mensagem = document.getElementById('mensagem');
 
-const inputNome = document.querySelector('#campo-nome');
-const btnEnviar = document.querySelector('#btn-enviar');
-const feedback = document.querySelector('#feedback-msg');
+    // Limpa a mensagem de erro/sucesso anterior
+    mensagem.textContent = '';
+    mensagem.style.color = 'red'; // Cor padrão para erros
 
-btnEnviar.onclick = function(event) {
-  event.preventDefault(); // MUITO IMPORTANTE! Impede o recarregamento da página.
+    if (nomeCompleto.value.trim() === '') {
+        mensagem.textContent = 'O campo Nome Completo não pode estar vazio.';
+        return;
+    }
 
-  const nomeDigitado = inputNome.value; // .value para pegar o valor de um input
+    if (!email.value.includes('@')) {
+        mensagem.textContent = 'O campo E-mail deve incluir o caractere @.';
+        return;
+    }
 
-  // Validação simples
-  if (nomeDigitado === '') {
-    feedback.innerText = 'Erro: O campo nome não pode estar vazio!';
-    feedback.style.color = 'red'; // Bônus: manipulando o CSS
-  } else {
-    feedback.innerText = 'Formulário enviado com sucesso!';
-    feedback.style.color = 'green';
-  }
-};
+    if (senha.value.length < 8) {
+        mensagem.textContent = 'A senha deve ter no mínimo 8 caracteres.';
+        return;
+    }
+
+    if (dataNascimento.value === '') {
+        mensagem.textContent = 'O campo Data de Nascimento não pode estar vazio.';
+        return;
+    }
+
+    if (!termos.checked) {
+        mensagem.textContent = 'Você precisa aceitar os termos.';
+        return;
+    }
+
+    mensagem.textContent = 'Cadastro realizado com sucesso!';
+    mensagem.style.color = 'green';
+}
