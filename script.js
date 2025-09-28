@@ -6,7 +6,7 @@ const inputPreco = document.getElementById('input-preco');
 let listaDeProdutos = [];
 
 function criarCardProduto(produto) {
-    const card = document.createElement('div');
+    const card = document.createElement('article');
     card.className = 'card-produto';
 
     const imagem = document.createElement('img');

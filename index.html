@@ -7,19 +7,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Loja de Eletrônicos</h1>
-
-    <div class="form-container">
-        <h2>Adicionar Novo Produto</h2>
-        <form id="form-produto">
-            <input type="text" id="input-titulo" placeholder="Título do produto" required>
-            <input type="number" id="input-preco" placeholder="Preço" step="0.01" required>
-            <button type="submit">Adicionar Produto</button>
-        </form>
-    </div>
-
-    <div id="catalogo" class="catalogo-container"></div>
-
+    <header>
+        <h1>Loja de Eletrônicos</h1>
+    </header>
+    
+    <main>
+        <section id="form-produto" class="form-container">
+            <h2>Adicionar Novo Produto</h2>
+            <form id="form-produto">
+                <input type="text" id="input-titulo" placeholder="Título do produto" required>
+                <input type="number" id="input-preco" placeholder="Preço" step="0.01" required>
+                <button type="submit">Adicionar Produto</button>
+            </form>
+        </section>
+        <section id="catalogo"  class="catalogo-container">
+            <h2>Produtos</h2>
+            <div id="catalogo"></div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Loja de Eletrônicos</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
