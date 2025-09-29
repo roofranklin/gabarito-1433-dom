@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Usuários</title>
+    <title>Catálogo Digital</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Lista de Usuários</h1>
-    <form id="form-usuario">
-        <input type="text" id="input-nome" placeholder="Digite um nome" required>
-        <button type="submit">Adicionar Usuário</button>
-    </form>
-    <ul id="lista-usuarios"></ul>
+    <h1>Loja de Eletrônicos</h1>
+
+    <div class="form-container">
+        <h2>Adicionar Novo Produto</h2>
+        <form id="form-produto">
+            <input type="text" id="input-titulo" placeholder="Título do produto" required>
+            <input type="number" id="input-preco" placeholder="Preço" step="0.01" required>
+            <button type="submit">Adicionar Produto</button>
+        </form>
+    </div>
+
+    <div id="catalogo" class="catalogo-container"></div>
 
     <script src="script.js"></script>
 </body>

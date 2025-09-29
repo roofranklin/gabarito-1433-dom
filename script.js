@@ -1,56 +1,82 @@
-const listaUsuarios = document.getElementById('lista-usuarios');
-const form = document.getElementById('form-usuario');
-const inputNome = document.getElementById('input-nome');
+const catalogoContainer = document.getElementById('catalogo');
+const formProduto = document.getElementById('form-produto');
+const inputTitulo = document.getElementById('input-titulo');
+const inputPreco = document.getElementById('input-preco');
 
-let listaDeUsuarios = [];
+let listaDeProdutos = [];
 
-function adicionarUsuarioNaLista(nome) {
-    const novoLi = document.createElement('li');
-    novoLi.textContent = `Nome: ${nome}`;
-    listaUsuarios.appendChild(novoLi);
+function criarCardProduto(produto) {
+    const card = document.createElement('div');
+    card.className = 'card-produto';
+
+    const imagem = document.createElement('img');
+    // Usa uma imagem padrão se o produto não tiver uma (para itens adicionados manualmente)
+    imagem.src = produto.image || 'https://via.placeholder.com/150';
+    imagem.alt = produto.title;
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = produto.title;
+
+    const preco = document.createElement('p');
+    preco.textContent = `R$ ${Number(produto.price).toFixed(2)}`;
+
+    card.appendChild(imagem);
+    card.appendChild(titulo);
+    card.appendChild(preco);
+
+    return card;
 }
 
-function salvarUsuariosNoStorage() {
-    localStorage.setItem('usuarios', JSON.stringify(listaDeUsuarios));
-}
-
-function renderizarUsuarios() {
-    listaUsuarios.innerHTML = ''; // Limpa a lista visual
-    listaDeUsuarios.forEach(usuario => {
-        adicionarUsuarioNaLista(usuario.nome);
+function renderizarProdutos() {
+    catalogoContainer.innerHTML = ''; // Limpa o catálogo visual
+    listaDeProdutos.forEach(produto => {
+        const card = criarCardProduto(produto);
+        catalogoContainer.appendChild(card);
     });
 }
 
-function buscarUsuariosDaAPI() {
-  fetch('https://jsonplaceholder.typicode.com/users')
-    .then(res => res.json())
-    .then(usuarios => {
-      listaDeUsuarios = usuarios.map(u => ({ nome: u.name })); // Simplificando o objeto
-      renderizarUsuarios();
-      salvarUsuariosNoStorage();
-    })
-    .catch(erro => console.error('Erro ao buscar usuários:', erro));
+function salvarProdutosNoStorage() {
+    localStorage.setItem('produtos', JSON.stringify(listaDeProdutos));
 }
 
-form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    const nomeDigitado = inputNome.value.trim();
+function buscarProdutosDaAPI() {
+  fetch('https://fakestoreapi.com/products')
+    .then(res => res.json())
+    .then(produtos => {
+      listaDeProdutos = produtos;
+      renderizarProdutos();
+      salvarProdutosNoStorage();
+    })
+    .catch(erro => console.error('Erro ao buscar produtos:', erro));
+}
 
-    if (nomeDigitado) {
-        const novoUsuario = { nome: nomeDigitado };
-        listaDeUsuarios.push(novoUsuario);
-        renderizarUsuarios();
-        salvarUsuariosNoStorage();
-        inputNome.value = '';
+formProduto.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const tituloDigitado = inputTitulo.value.trim();
+    const precoDigitado = inputPreco.value;
+
+    if (tituloDigitado && precoDigitado) {
+        const novoProduto = {
+            // O ID pode ser útil no futuro, geramos um simples baseado no tempo
+            id: Date.now(),
+            title: tituloDigitado,
+            price: precoDigitado,
+            image: '' // Novos produtos não terão imagem da API
+        };
+        listaDeProdutos.push(novoProduto);
+        renderizarProdutos();
+        salvarProdutosNoStorage();
+        inputTitulo.value = '';
+        inputPreco.value = '';
     }
 });
 
 window.onload = function() {
-  const usuariosSalvos = localStorage.getItem('usuarios');
-  if (usuariosSalvos) {
-    listaDeUsuarios = JSON.parse(usuariosSalvos);
-    renderizarUsuarios();
+  const produtosSalvos = localStorage.getItem('produtos');
+  if (produtosSalvos) {
+    listaDeProdutos = JSON.parse(produtosSalvos);
+    renderizarProdutos();
   } else {
-    buscarUsuariosDaAPI(); // Só busca da API se o storage estiver vazio
+    buscarProdutosDaAPI(); // Só busca da API se o storage estiver vazio
   }
 };
