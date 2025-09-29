@@ -7,7 +7,7 @@ let listaDeProdutos = [];
 
 function criarCardProduto(produto) {
     const card = document.createElement('article');
-    card.className = 'card-produto';
+    card.className = 'card-produto col-12 col-sm-6 col-md-4';
 
     const imagem = document.createElement('img');
     // Usa uma imagem padrão se o produto não tiver uma (para itens adicionados manualmente)
