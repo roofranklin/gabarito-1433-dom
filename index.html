@@ -1,45 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo Digital</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
-<body class="bg-light">
-    <header class="text-center py-4">
-        <h1 class="text-dark">Loja de Eletrônicos</h1>
-    </header>
-
-    <main class="container">
-        <section id="form-produto" class="card shadow-sm mb-4">
-            <div class="card-body">
-                <h2 class="card-title text-center mb-4">Adicionar Novo Produto</h2>
-                <form id="form-produto" class="d-flex justify-content-center gap-3">
-                    <input type="text" id="input-titulo" class="form-control" placeholder="Título do produto" required>
-                    <input type="number" id="input-preco" class="form-control" placeholder="Preço" step="0.01" required>
-                    <button type="submit" class="btn btn-primary">Adicionar Produto</button>
-                </form>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="login-form">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" required>
             </div>
-        </section>
-
-        <section id="destaque-container" class="mb-4">
-            <h2 class="text-center mb-4">Produto em Destaque</h2>
-            <div id="destaque" class="d-flex justify-content-center"></div>
-        </section>
-
-        <section id="catalogo-container" class="mb-4">
-            <h2 class="text-center mb-4">Produtos</h2>
-            <div id="catalogo" class="d-flex flex-wrap justify-content-center gap-3"></div>
-        </section>
-    </main>
-
-    <footer class="text-center py-3 mt-5">
-        <p class="text-muted mb-0">&copy; 2025 Loja de Eletrônicos</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+    <script src="js/login.js"></script>
 </body>
 </html>
