@@ -93,6 +93,12 @@ document.getElementById('add-product-btn').addEventListener('click', () => {
 // Lidar com o submit do formulário (Adicionar/Editar)
 productForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    if (username !== 'johnd') {
+        alert('Você não tem permissão para executar esta ação.');
+        return;
+    }
+
     const id = document.getElementById('product-id').value;
     const productData = {
         title: document.getElementById('product-title').value,
@@ -131,6 +137,12 @@ productForm.addEventListener('submit', async (event) => {
 
 // Lidar com a confirmação de exclusão
 document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+    if (username !== 'johnd') {
+        alert('Você não tem permissão para executar esta ação.');
+        deleteConfirmModal.hide();
+        return;
+    }
+
     try {
         await fetch(`${API_URL}/${currentProductId}`, { method: 'DELETE' });
         
