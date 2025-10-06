@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarProdutos();
 });
 
+const tbody = document.getElementById('products-table-body');
+
 async function carregarProdutos() {
     try {
         const response = await fetch('https://fakestoreapi.com/products');
@@ -10,7 +12,6 @@ async function carregarProdutos() {
         }
         const produtos = await response.json();
 
-        const tbody = document.getElementById('products-table-body');
         tbody.innerHTML = ''; // Limpa a tabela antes de adicionar os novos dados
 
         produtos.forEach(produto => {
@@ -28,15 +29,14 @@ const productModalElement = document.getElementById('product-modal');
 const productModal = new bootstrap.Modal(productModalElement);
 const productForm = document.getElementById('product-form');
 const productModalLabel = document.getElementById('product-modal-label');
-const productIdInput = document.getElementById('product-id');
 const productTitleInput = document.getElementById('product-title');
 const productPriceInput = document.getElementById('product-price');
 
 // Abre o modal para adicionar um novo produto
 addProductBtn.addEventListener('click', () => {
     productModalLabel.textContent = 'Adicionar Novo Produto';
-    productForm.reset(); // Limpa campos de um uso anterior
-    productIdInput.value = ''; // Garante que não há ID
+    productForm.reset();
+    delete productForm.dataset.editingId; // Limpa o ID de edição
     productModal.show();
 });
 
@@ -44,67 +44,130 @@ addProductBtn.addEventListener('click', () => {
 productForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const produto = {
+    const produtoAtualizado = {
         title: productTitleInput.value,
         price: parseFloat(productPriceInput.value),
-        // A API da Fake Store espera outros campos, vamos preenchê-los com valores fixos
         description: 'lorem ipsum set',
         image: 'https://i.pravatar.cc',
         category: 'electronic'
     };
 
-    // Se houver um ID, é uma edição. Se não, é uma adição.
-    const id = productIdInput.value;
+    const id = productForm.dataset.editingId;
+
     if (id) {
-        // Lógica de edição (será implementada depois)
+        await atualizarProduto(id, produtoAtualizado);
     } else {
-        await adicionarProduto(produto);
+        await adicionarProduto(produtoAtualizado);
     }
 });
 
 async function adicionarProduto(produto) {
     try {
-        /*
-        AVISO IMPORTANTE: A Fake Store API simula as requisições POST, PUT, DELETE.
-        Ela retorna uma resposta de sucesso, mas não altera os dados de verdade no servidor.
-        O que faremos é atualizar a interface (o DOM) para refletir a mudança que
-        deveria ter acontecido.
-        */
         const response = await fetch('https://fakestoreapi.com/products', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(produto)
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const produtoAdicionado = await response.json();
-
-        // Adicionamos o produto retornado (com ID simulado) à tabela
         adicionarLinhaProduto(produtoAdicionado);
-
-        productModal.hide(); // Fecha o modal
+        productModal.hide();
     } catch (error) {
         console.error('Falha ao adicionar produto:', error);
     }
 }
 
 function adicionarLinhaProduto(produto) {
-    const tbody = document.getElementById('products-table-body');
     const tr = document.createElement('tr');
+    tr.dataset.productId = produto.id; // Adiciona um data-attribute na linha para fácil acesso
 
     tr.innerHTML = `
         <td>${produto.id}</td>
-        <td>${produto.title}</td>
-        <td>R$ ${produto.price.toFixed(2)}</td>
+        <td class="product-title">${produto.title}</td>
+        <td class="product-price">R$ ${produto.price.toFixed(2)}</td>
         <td>
             <button class="btn btn-warning btn-sm edit-btn" data-id="${produto.id}">Editar</button>
             <button class="btn btn-danger btn-sm delete-btn" data-id="${produto.id}">Deletar</button>
         </td>
     `;
     tbody.appendChild(tr);
+}
+
+// --- Delegação de Eventos para Editar e Deletar ---
+
+tbody.addEventListener('click', async (event) => {
+    const target = event.target;
+
+    // --- Lógica de Deletar ---
+    if (target.classList.contains('delete-btn')) {
+        const id = target.dataset.id;
+        const confirmacao = confirm('Tem certeza que deseja deletar este produto?');
+        if (confirmacao) {
+            await deletarProduto(id);
+            target.closest('tr').remove();
+        }
+    }
+
+    // --- Lógica de Editar ---
+    if (target.classList.contains('edit-btn')) {
+        const id = target.dataset.id;
+        await abrirModalEdicao(id);
+    }
+});
+
+async function deletarProduto(id) {
+    try {
+        const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        console.log(`Produto ${id} deletado com sucesso (simulado).`);
+    } catch (error) {
+        console.error(`Falha ao deletar produto ${id}:`, error);
+    }
+}
+
+async function abrirModalEdicao(id) {
+    try {
+        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const produto = await response.json();
+
+        productModalLabel.textContent = 'Editar Produto';
+        productTitleInput.value = produto.title;
+        productPriceInput.value = produto.price;
+        productForm.dataset.editingId = id; // Armazena o ID no formulário
+
+        productModal.show();
+    } catch (error) {
+        console.error(`Falha ao buscar produto ${id} para edição:`, error);
+    }
+}
+
+async function atualizarProduto(id, dados) {
+    try {
+        const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const produtoRetornado = await response.json();
+
+        // Atualiza a linha na tabela
+        const tr = tbody.querySelector(`tr[data-product-id='${id}']`);
+        if (tr) {
+            tr.querySelector('.product-title').textContent = produtoRetornado.title;
+            tr.querySelector('.product-price').textContent = `R$ ${produtoRetornado.price.toFixed(2)}`;
+        }
+
+        productModal.hide();
+        delete productForm.dataset.editingId; // Limpa o ID de edição
+    } catch (error) {
+        console.error(`Falha ao atualizar produto ${id}:`, error);
+    }
 }
